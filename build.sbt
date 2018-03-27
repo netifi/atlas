@@ -114,14 +114,18 @@ lazy val `atlas-poller-cloudwatch` = project
 lazy val `atlas-standalone` = project
   .configure(BuildSettings.profile)
   .dependsOn(`atlas-module-akka`, `atlas-module-webapi`)
-  .settings(libraryDependencies ++= Seq(
+  .settings(
+  libraryDependencies ++= Seq(
     Dependencies.iepGuice,
     Dependencies.guiceCore,
     Dependencies.guiceMulti,
     Dependencies.log4jApi,
     Dependencies.log4jCore,
     Dependencies.log4jSlf4j,
-    Dependencies.spectatorLog4j
+    Dependencies.spectatorLog4j,
+    Dependencies.proteusClient,
+    Dependencies.proteusMetrics,
+    Dependencies.reactorScala
   ))
 
 lazy val `atlas-test` = project

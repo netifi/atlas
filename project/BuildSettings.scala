@@ -58,6 +58,7 @@ object BuildSettings {
   val resolvers = Seq(
     Resolver.mavenLocal,
     Resolver.jcenterRepo,
+    "netifi-oss" at "https://dl.bintray.com/netifi/netifi-oss/",
     "jfrog" at "http://oss.jfrog.org/oss-snapshot-local")
 
   // Don't create root.jar, from:

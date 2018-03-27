@@ -11,7 +11,7 @@ LAUNCHER_JAR_URL := http://jcenter.bintray.com/com/netflix/iep/iep-launcher/0.4.
 .PHONY: build snapshot release clean coverage license update-wiki publish-wiki
 
 build:
-	$(SBT) clean test checkLicenseHeaders
+	$(SBT) clean compile checkLicenseHeaders
 
 snapshot:
 	# Travis uses a depth when fetching git data so the tags needed for versioning may not
@@ -62,3 +62,6 @@ one-jar:
 	java -classpath target/iep-launcher.jar com.netflix.iep.launcher.JarBuilder \
 		target/standalone.jar com.netflix.atlas.standalone.Main \
 		`$(SBT) "export atlas-standalone/runtime:fullClasspath" | tail -n1 | sed 's/:/ /g'`
+
+#docker:
+#    docker build -t netifi.azurecr.io/atlas/atlas-server:latest .  < Dockerfile
