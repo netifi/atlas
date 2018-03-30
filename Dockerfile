@@ -2,8 +2,6 @@ FROM openjdk:8-jre-alpine
 
 MAINTAINER Netifi Proteus Team
 
-ARG ROUTER_VERSION
-
 RUN apk --update add bash unzip
 
 # Clustering and RSocket Ports
@@ -11,8 +9,10 @@ EXPOSE 7101
 
 RUN mkdir -p /opt/netifi/atlas
 
-COPY target/standalone.jar /opt/netifi/atlas/standalone.jar
+COPY target/standalone.jar /opt/netifi/atlas/lib/standalone.jar
+COPY start-atlas /opt/netifi/atlas/bin/start-atlas
+RUN chmod +x /opt/netifi/atlas/bin/start-atlas
 
 WORKDIR /opt/netifi/atlas
 
-CMD ["java", "-jar", "$ATLAS_SERVER_OPTS", "standalone.jar"]
+CMD ["./bin/start-atlas"]

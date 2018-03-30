@@ -186,6 +186,11 @@ class ProteusProvider @Inject()(registry: Registry, db: Database)
   val destination: String = UUID.randomUUID.toString
   val group: String = System.getProperty("NETIFI_GROUP", "netifi.metrics")
 
+  logger.info("host => {}", host)
+  logger.info("port => {}", port)
+  logger.info("group => {}", group)
+  logger.info("destination => {}", destination)
+
   val netifi = Netifi
     .builder()
     .group(group)
