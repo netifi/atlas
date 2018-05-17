@@ -47,7 +47,7 @@ trait BaseMetricsSnapshotHandler extends MetricsSnapshotHandler with StrictLoggi
   private val clock = Clock.systemDefaultZone()
 
   protected def convert(proteusMeter: ProteusMeter, commonTags: Map[String, String]): List[Datapoint] = {
-    logger.debug("received metric {}", proteusMeter)
+    logger.info("received metric {}", proteusMeter)
     val timestamp = clock.millis()
     var tags = commonTags
     val id = proteusMeter.getId
@@ -64,6 +64,11 @@ trait BaseMetricsSnapshotHandler extends MetricsSnapshotHandler with StrictLoggi
 
     if (id.getDescription != null && !id.getDescription.isEmpty) {
       tags += "description" -> id.getBaseUnit
+    }
+
+     id.getType.name() match {
+       case "GAUGE" => tags += TagKey.dsType -> "gauge"
+       case "COUNTER" => tags += TagKey.dsType -> "counter"
     }
 
     asScalaBuffer(proteusMeter.getMeasureList)
