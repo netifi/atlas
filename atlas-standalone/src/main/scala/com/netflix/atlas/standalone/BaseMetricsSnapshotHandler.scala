@@ -16,7 +16,7 @@
 package com.netflix.atlas.standalone
 
 import java.time.Clock
-import java.util.UUID
+import java.util.{Optional, UUID}
 import java.util.concurrent.TimeUnit
 
 import com.netflix.atlas.core.db.{Database, MemoryDatabase}
@@ -28,7 +28,7 @@ import com.netflix.atlas.webapi.PublishApi.PublishRequest
 import com.netflix.spectator.api.Registry
 import com.netflix.spectator.api.histogram.{BucketCounter, BucketFunctions}
 import com.typesafe.scalalogging.StrictLogging
-import io.netifi.proteus.Netifi
+import io.netifi.proteus.Proteus
 import io.netifi.proteus.metrics.om.{MetricsSnapshotHandlerServer, _}
 import io.netty.buffer.ByteBuf
 import io.rsocket.transport.netty.server.TcpServerTransport
@@ -196,19 +196,17 @@ class ProteusProvider @Inject()(registry: Registry, db: Database)
   logger.info("group => {}", group)
   logger.info("destination => {}", destination)
 
-  val netifi = Netifi
+  val netifi = Proteus
     .builder()
     .group(group)
     .accessKey(accessKey)
     .accessToken(accessToken)
-    .accountId(accountId)
-    .minHostsAtStartup(minHostsAtStartup)
-    .poolSize(poolSize)
     .host(host)
+    .port(port)
     .build()
 
   netifi
-    .addService(new MetricsSnapshotHandlerServer(this))
+    .addService(new MetricsSnapshotHandlerServer(this, Optional.empty()))
 
   override def get(): BaseMetricsSnapshotHandler = this
 
@@ -223,7 +221,7 @@ class StandAloneProvider @Inject()(registry: Registry, db: Database)
     with BaseMetricsSnapshotHandler
     with StrictLogging {
 
-  val handler: RSocket = new MetricsSnapshotHandlerServer(this)
+  val handler: RSocket = new MetricsSnapshotHandlerServer(this, Optional.empty())
 
   val transport = TcpServerTransport.create("127.0.0.1", 9800)
 
