@@ -181,13 +181,17 @@ class ProteusProvider @Inject()(registry: Registry, db: Database)
     with BaseMetricsSnapshotHandler
     with StrictLogging {
 
-  val accountId: Long = java.lang.Long.getLong("ACCOUNT_ID", 100)
   val minHostsAtStartup: Int = java.lang.Integer.getInteger("MIN_HOSTS_AT_STARTUP", 1)
   val poolSize: Int = Integer.getInteger("POOL_SIZE", 1)
   val accessKey: Long = java.lang.Long.getLong("ACCESS_KEY", 7685465987873703191L)
   val accessToken: String = System.getProperty("ACCESS_TOKEN", "PYYgV9XHSJ/3KqgK5wYjz+73MeA=")
-  val host: String = System.getProperty("ROUTER_HOST", "localhost")
-  val port: Int = Integer.getInteger("ROUTER_PORT", 8001)
+  val host: String = System.getProperty("ROUTER_HOST", "broker.prd.netifi.io")
+  val port: Int = Integer.getInteger("ROUTER_PORT", 30003)
+
+//
+//  val host: String = System.getProperty("ROUTER_HOST", "localhost")
+//  val port: Int = Integer.getInteger("ROUTER_PORT", 8001)
+
   val destination: String = UUID.randomUUID.toString
   val group: String = System.getProperty("NETIFI_GROUP", "netifi.metrics")
 
